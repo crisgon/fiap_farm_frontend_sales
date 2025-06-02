@@ -1,12 +1,14 @@
 import "./App.css";
-import SalesProvider from "./components/SalesComponent";
 
-const App = () => {
+function App() {
   return (
-    <div className="content">
-      <SalesProvider />
+    <div className="container">
+      <div className="icon-container">
+        <h2>📊</h2>
+      </div>
+      <h1 className="title">Fiap Farm Sales</h1>
     </div>
   );
-};
+}
 
 export default App;
