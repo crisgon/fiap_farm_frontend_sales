@@ -14,9 +14,16 @@ export default defineConfig({
       filename: "remoteEntry.js",
       exposes: {
         "./modules": "./src/modules/index.ts",
+        "./App": "./src/App.tsx",
       },
 
-      shared: ["react", "react-dom", "tailwindcss"],
+      shared: [
+        "react",
+        "react-dom",
+        "react-router-dom",
+        "react-redux",
+        "tailwindcss",
+      ],
     }),
   ],
   resolve: {

@@ -1,16 +1,29 @@
-import "./App.css";
-import { Button } from "@/components/ui/button";
+import { Route, Routes } from "react-router-dom";
+import { Home } from "./modules";
+import { useAppDispatch, useAppSelector } from "./stores/redux/hooks";
+import { useEffect } from "react";
+import { setUser } from "./stores/redux/slices/authSlice";
 
-function App() {
+interface AppComponent {
+  user?: unknown;
+}
+
+function App({ user }: AppComponent) {
+  const dispatch = useAppDispatch();
+
+  const store = useAppSelector((state) => state);
+  useEffect(() => {
+    dispatch(setUser(user));
+  }, [dispatch, user]);
+
+  console.log("SALES", store);
+
   return (
-    <div className="container">
-      <div className="icon-container">
-        <h2>📊</h2>
-      </div>
-      <h1 className="title">Fiap Farm Sales</h1>
-      <Button>Meu botão</Button>
-    </div>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="sales" element={<div>SALES</div>} />
+    </Routes>
   );
 }
 
-export default App;
+export { App };
