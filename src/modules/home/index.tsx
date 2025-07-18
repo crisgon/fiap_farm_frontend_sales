@@ -14,6 +14,7 @@ import { useState } from "react";
 import { CreateDialog } from "./components/CreateDialog";
 import { SaleStatus, type Sale } from "@/domain/repositories/SalesRepository";
 import DeleteDialog from "./components/DeleteDialog";
+import { Card, CardContent } from "@/components/ui/card";
 
 export const defaultFormState = {
   quantity: undefined,
@@ -47,89 +48,97 @@ function Home() {
           Adicionar venda
         </Button>
       </div>
-      <div className="flex flex-col h-full w-full max-w-5xl mt-8">
-        {isLoading || isPending ? (
-          <div className="flex justify-center items-center my-4">
-            <Spinner />
-          </div>
-        ) : !data?.length ? (
-          <span>Não foram encontrados registros</span>
-        ) : (
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[100px]">Produto</TableHead>
-                <TableHead className="text-center">
-                  Quantidade vendida
-                </TableHead>
-                <TableHead className="text-center">Valor unitário</TableHead>
+      <Card className="w-full max-w-5xl  mt-8">
+        <CardContent>
+          {isLoading || isPending ? (
+            <div className="flex justify-center items-center my-4">
+              <Spinner />
+            </div>
+          ) : !data?.length ? (
+            <span>Não foram encontrados registros</span>
+          ) : (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[100px]">Produto</TableHead>
+                  <TableHead className="text-center">
+                    Quantidade vendida
+                  </TableHead>
+                  <TableHead className="text-center">Valor unitário</TableHead>
 
-                <TableHead className="text-center">Custo de produção</TableHead>
-                <TableHead className="text-center">Valor de venda</TableHead>
-                <TableHead className="text-center">Data da venda</TableHead>
-                <TableHead />
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {data.map((sale) => (
-                <TableRow key={sale.uid}>
-                  <TableCell className="font-medium">
-                    {sale.product?.name}
-                  </TableCell>
-                  <TableCell className="text-center">{sale.quantity}</TableCell>
-                  <TableCell className="text-center">
-                    {(sale.unitPrice ? sale.unitPrice : 0).toFixed(2)}
-                  </TableCell>
-                  <TableCell className="text-center text-destructive">
-                    {((sale.cost ? sale.cost / 10 : 0) * sale.quantity).toFixed(
-                      2
-                    )}
-                  </TableCell>
-                  <TableCell className="text-center text-primary">
-                    {(
-                      (sale.unitPrice ? sale.unitPrice / 10 : 0) * sale.quantity
-                    ).toFixed(2)}
-                  </TableCell>
-                  <TableCell className="text-center">
-                    {sale.saleDate
-                      ? new Date(sale.saleDate).toLocaleDateString()
-                      : ""}
-                  </TableCell>
-                  <TableCell
-                    style={{
-                      flexDirection: "row",
-                      gap: 2,
-                    }}
-                  >
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => {
-                        setEditableSale({
-                          ...sale,
-                        });
-                        setModalIsOpen(true);
-                      }}
-                    >
-                      <Pencil color="#198155" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => {
-                        setEditableSale({ ...sale });
-                        setDeleteModalIsOpen(true);
-                      }}
-                    >
-                      <Trash2 color="#ef4444" />
-                    </Button>
-                  </TableCell>
+                  <TableHead className="text-center">
+                    Custo de produção
+                  </TableHead>
+                  <TableHead className="text-center">Valor de venda</TableHead>
+                  <TableHead className="text-center">Data da venda</TableHead>
+                  <TableHead />
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        )}
-      </div>
+              </TableHeader>
+              <TableBody>
+                {data.map((sale) => (
+                  <TableRow key={sale.uid}>
+                    <TableCell className="font-medium">
+                      {sale.product?.name}
+                    </TableCell>
+                    <TableCell className="text-center">
+                      {sale.quantity}
+                    </TableCell>
+                    <TableCell className="text-center">
+                      {(sale.unitPrice ? sale.unitPrice : 0).toFixed(2)}
+                    </TableCell>
+                    <TableCell className="text-center text-destructive">
+                      {(
+                        (sale.cost ? sale.cost / 10 : 0) * sale.quantity
+                      ).toFixed(2)}
+                    </TableCell>
+                    <TableCell className="text-center text-primary">
+                      {(
+                        (sale.unitPrice ? sale.unitPrice / 10 : 0) *
+                        sale.quantity
+                      ).toFixed(2)}
+                    </TableCell>
+                    <TableCell className="text-center">
+                      {sale.saleDate
+                        ? new Date(sale.saleDate).toLocaleDateString()
+                        : ""}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        flexDirection: "row",
+                        gap: 2,
+                      }}
+                    >
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => {
+                          setEditableSale({
+                            ...sale,
+                          });
+                          setModalIsOpen(true);
+                        }}
+                      >
+                        <Pencil color="#198155" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => {
+                          setEditableSale({ ...sale });
+                          setDeleteModalIsOpen(true);
+                        }}
+                      >
+                        <Trash2 color="#ef4444" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          )}
+        </CardContent>
+      </Card>
+
       {modalIsOpen && (
         <CreateDialog
           isOpen={modalIsOpen}
